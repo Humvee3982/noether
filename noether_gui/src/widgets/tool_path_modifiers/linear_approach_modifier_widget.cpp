@@ -15,16 +15,28 @@ static const std::string OFFSET_KEY = "offset";
 
 namespace noether
 {
-LinearApproachToolPathModifierWidget::LinearApproachToolPathModifierWidget(QWidget* parent)
-  : ToolPathModifierWidget(parent), ui_(new Ui::LinearApproachModifier()), vector_editor_ui_(new Ui::Vector3dEditor())
+LinearApproachToolPathModifierWidget::LinearApproachToolPathModifierWidget(QWidget* parent, std::string description)
+  : ToolPathModifierWidget(parent)
+  , ui_(new Ui::LinearApproachModifier()) 
+  , vector_editor_ui_(new Ui::Vector3dEditor())
 {
-  ui_->setupUi(this);
+  auto layout = new QFormLayout(this);
 
-  // Add a page to the stacked widget for the axis editor
-  auto page_vector = new QWidget(this);
-  vector_editor_ui_->setupUi(page_vector);
+  if (description.empty()){
+    description = "Adds a series of waypoints in a linear pattern off the first waypoint in a tool path";
+  }
+  auto description_widget = new QLabel(description.c_str(), this);
+  description_widget->setWordWrap(true);
+  layout->addRow(description_widget);
+
+  auto page = new QWidget(this);
+  ui_->setupUi(page);
+  layout->addRow(page);
+
+  auto subpage = new QWidget(this);
+  vector_editor_ui_->setupUi(subpage);
   vector_editor_ui_->group_box->setTitle("Axis");
-  ui_->stackedWidget->addWidget(page_vector);
+  ui_->stackedWidget->addWidget(subpage);
 
   // Connect the button to toggle between the axis selector and axis editor
   connect(ui_->combo_box_menu, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {

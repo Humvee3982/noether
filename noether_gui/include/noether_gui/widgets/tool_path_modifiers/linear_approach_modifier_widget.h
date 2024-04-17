@@ -15,7 +15,7 @@ class LinearApproachToolPathModifierWidget : public ToolPathModifierWidget
 {
   Q_OBJECT
 public:
-  LinearApproachToolPathModifierWidget(QWidget* parent = nullptr);
+  LinearApproachToolPathModifierWidget(QWidget* parent = nullptr, std::string description = "");
 
   ToolPathModifier::ConstPtr create() const override;
 

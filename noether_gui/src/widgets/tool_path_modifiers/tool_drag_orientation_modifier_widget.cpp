@@ -16,6 +16,10 @@ ToolDragOrientationToolPathModifierWidget::ToolDragOrientationToolPathModifierWi
 {
   auto layout = new QFormLayout(this);
 
+  auto description = new QLabel("Transforms the waypoint to correspond with the center of the grinding tool, so that the edge of the tool is in contact with the media.", this);
+  description->setWordWrap(true);
+  layout->addRow(description);
+
   // Angle between the grinder and the media being ground
   angle_offset_ = new QDoubleSpinBox(this);
   angle_offset_->setMinimum(0.0);

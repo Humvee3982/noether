@@ -15,6 +15,9 @@ MovingAverageOrientationSmoothingModifierWidget::MovingAverageOrientationSmoothi
   , label_(new QLabel("Window size", this))
   , window_size_(new QSpinBox(this))
 {
+  auto description = new QLabel("Applies a moving average filter to waypoints in each tool path segment to smooth their orientations", this);
+  description->setWordWrap(true);
+  layout_->addRow(description);
   layout_->addRow(label_, window_size_);
   window_size_->setMinimum(3);
 }

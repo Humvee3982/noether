@@ -5,8 +5,16 @@
 #include "ui_vector3d_editor_widget.h"
 #include "ui_linear_approach_modifier_widget.h"
 
+#include <QFormLayout>
+#include <QLabel>
+
 namespace noether
 {
+LinearDepartureToolPathModifierWidget::LinearDepartureToolPathModifierWidget(QWidget* parent)
+  : LinearApproachToolPathModifierWidget(parent, "Adds a series of waypoints in a linear pattern off the last waypoint in a tool path.")
+{
+}
+
 ToolPathModifier::ConstPtr LinearDepartureToolPathModifierWidget::create() const
 {
   if (ui_->combo_box_menu->currentIndex() == 0)

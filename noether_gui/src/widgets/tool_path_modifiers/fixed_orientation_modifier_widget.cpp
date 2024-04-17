@@ -5,13 +5,26 @@
 #include <noether_tpp/tool_path_modifiers/fixed_orientation_modifier.h>
 #include <yaml-cpp/yaml.h>
 
+#include <QFormLayout>
+#include <QLabel>
+
 namespace noether
 {
 FixedOrientationModifierWidget::FixedOrientationModifierWidget(QWidget* parent)
-  : ToolPathModifierWidget(parent), ui_(new Ui::Vector3dEditor())
+  : ToolPathModifierWidget(parent)
+  , ui_(new Ui::Vector3dEditor())
 {
-  ui_->setupUi(this);
+  auto layout = new QFormLayout(this);
+  auto description = new QLabel("Aligns the orientations of each waypoint with the existing waypoint normal (z-axis) and the specified reference x-axis direction", this);
+  description->setWordWrap(true);
+  layout->addRow(description);
+
+  // Page for the Vector 3d Editor
+  auto page = new QWidget();
+
+  ui_->setupUi(page);
   ui_->group_box->setTitle("Reference X Direction");
+  layout->addRow(page);
 
   // Manually set x value
   ui_->double_spin_box_x->setValue(1.0);

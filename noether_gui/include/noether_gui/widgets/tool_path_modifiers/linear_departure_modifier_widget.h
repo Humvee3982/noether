@@ -7,8 +7,9 @@ namespace noether
 class LinearDepartureToolPathModifierWidget : public LinearApproachToolPathModifierWidget
 {
   Q_OBJECT
+
 public:
-  using LinearApproachToolPathModifierWidget::LinearApproachToolPathModifierWidget;
+  LinearDepartureToolPathModifierWidget(QWidget* parent = nullptr);
 
   ToolPathModifier::ConstPtr create() const override;
 };

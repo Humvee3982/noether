@@ -8,8 +8,8 @@ namespace noether
 {
 struct UniformOrientationModifierWidget : public ToolPathModifierWidget
 {
-  Q_OBJECT
-  using ToolPathModifierWidget::ToolPathModifierWidget;
+public:
+  UniformOrientationModifierWidget(QWidget* parent = nullptr);
   ToolPathModifier::ConstPtr create() const override;
 };
 

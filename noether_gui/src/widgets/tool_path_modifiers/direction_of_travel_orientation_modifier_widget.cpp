@@ -11,8 +11,8 @@ DirectionOfTravelOrientationModifierWidget::DirectionOfTravelOrientationModifier
   : ToolPathModifierWidget(parent)
 {
   auto layout = new QFormLayout(this);
-
   auto description = new QLabel("Aligns the x-axis of all waypoints with the direction of travel between adjacent waypoints", this);
+  description->setWordWrap(true);
   layout->addRow(description);
 }
 

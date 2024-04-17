@@ -5,13 +5,25 @@
 #include <noether_tpp/tool_path_modifiers/standard_edge_paths_organization_modifier.h>
 #include <yaml-cpp/yaml.h>
 
+#include <QFormLayout>
+#include <QLabel>
+
 namespace noether
 {
 StandardEdgePathsOrganizationModifierWidget::StandardEdgePathsOrganizationModifierWidget(QWidget* parent)
-  : ToolPathModifierWidget(parent), ui_(new Ui::Vector3dEditor())
+  : ToolPathModifierWidget(parent)
+  , ui_(new Ui::Vector3dEditor())
 {
-  ui_->setupUi(this);
+  auto layout = new QFormLayout(this);
+
+  auto description = new QLabel("Organizes a set of tool paths into a standard configuration for edge paths.", this);
+  description->setWordWrap(true);
+  layout->addRow(description);
+
+  auto page = new QWidget();
+  ui_->setupUi(page);
   ui_->group_box->setTitle("Start Reference");
+  layout->addRow(page);
 }
 
 void StandardEdgePathsOrganizationModifierWidget::configure(const YAML::Node& config)

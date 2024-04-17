@@ -10,7 +10,7 @@ struct RasterOrganizationModifierWidget : public ToolPathModifierWidget
 {
   Q_OBJECT
 public:
-  using ToolPathModifierWidget::ToolPathModifierWidget;
+  RasterOrganizationModifierWidget(QWidget* parent = nullptr);
 
   ToolPathModifier::ConstPtr create() const override;
 };

@@ -10,7 +10,7 @@ struct SnakeOrganizationModifierWidget : public ToolPathModifierWidget
 {
   Q_OBJECT
 public:
-  using ToolPathModifierWidget::ToolPathModifierWidget;
+  SnakeOrganizationModifierWidget(QWidget* parent = nullptr);
 
   ToolPathModifier::ConstPtr create() const override;
 };
