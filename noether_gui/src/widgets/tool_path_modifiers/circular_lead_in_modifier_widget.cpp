@@ -17,6 +17,9 @@ CircularLeadInToolPathModifierWidget::CircularLeadInToolPathModifierWidget(QWidg
 {
   auto layout = new QFormLayout(this);
 
+  auto description = new QLabel("Adjusts the parameters of the tool approach trajeectory to the media", this);
+  layout->addRow(description);
+
   arc_angle_ = new QDoubleSpinBox(this);
   arc_angle_->setMinimum(0.0);
   arc_angle_->setSingleStep(1.0);

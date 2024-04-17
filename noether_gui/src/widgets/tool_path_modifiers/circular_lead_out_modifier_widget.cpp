@@ -17,6 +17,9 @@ CircularLeadOutToolPathModifierWidget::CircularLeadOutToolPathModifierWidget(QWi
 {
   auto layout = new QFormLayout(this);
 
+  auto description = new QLabel("Adds exit waypoints in a circular arc (with fixed orientation) to the end of a trajectory", this);
+  layout->addRow(description);
+
   // Lead out angle (how steep or shallow the exit of the tool path is)
   arc_angle_ = new QDoubleSpinBox(this);
   arc_angle_->setMinimum(0.0);

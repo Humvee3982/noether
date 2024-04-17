@@ -9,7 +9,9 @@ namespace noether
 struct DirectionOfTravelOrientationModifierWidget : public ToolPathModifierWidget
 {
   Q_OBJECT
-  using ToolPathModifierWidget::ToolPathModifierWidget;
+
+public:
+  DirectionOfTravelOrientationModifierWidget(QWidget* parent = nullptr);
   ToolPathModifier::ConstPtr create() const override;
 };
 
