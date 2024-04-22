@@ -75,9 +75,9 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
   tube_filter_->SetNumberOfSides(10);
   tube_filter_->CappingOn();
 
-  vtkRenderWindow* window = render_widget_->GetRenderWindow();
+  vtkRenderWindow* window = render_widget_->renderWindow();
   window->AddRenderer(renderer_);
-  render_widget_->GetInteractor()->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
+  render_widget_->interactor()->SetInteractorStyle(vtkSmartPointer<vtkInteractorStyleTrackballCamera>::New());
   render_widget_->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
   // Set visibility of the actors based on the default state of the check boxes
@@ -96,37 +96,37 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
   connect(ui_->double_spin_box_axis_size, &QDoubleSpinBox::editingFinished, this, [this]() {
     axes_->SetScaleFactor(ui_->double_spin_box_axis_size->value());
     tube_filter_->SetRadius(axes_->GetScaleFactor() / 10.0);
-    render_widget_->GetRenderWindow()->Render();
-    render_widget_->GetRenderWindow()->Render();
+    render_widget_->renderWindow()->Render();
+    render_widget_->renderWindow()->Render();
   });
 }
 
 void TPPWidget::onShowOriginalMesh(const bool checked)
 {
   mesh_actor_->SetVisibility(checked);
-  render_widget_->GetRenderWindow()->Render();
-  render_widget_->GetRenderWindow()->Render();
+  render_widget_->renderWindow()->Render();
+  render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowModifiedMesh(const bool checked)
 {
   mesh_fragment_actor_->SetVisibility(checked);
-  render_widget_->GetRenderWindow()->Render();
-  render_widget_->GetRenderWindow()->Render();
+  render_widget_->renderWindow()->Render();
+  render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowUnmodifiedToolPath(const bool checked)
 {
   unmodified_tool_path_actor_->SetVisibility(checked);
-  render_widget_->GetRenderWindow()->Render();
-  render_widget_->GetRenderWindow()->Render();
+  render_widget_->renderWindow()->Render();
+  render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowModifiedToolPath(const bool checked)
 {
   tool_path_actor_->SetVisibility(checked);
-  render_widget_->GetRenderWindow()->Render();
-  render_widget_->GetRenderWindow()->Render();
+  render_widget_->renderWindow()->Render();
+  render_widget_->renderWindow()->Render();
 }
 
 std::vector<ToolPaths> TPPWidget::getToolPaths() { return tool_paths_; }
@@ -154,8 +154,8 @@ void TPPWidget::setMeshFile(const QString& file)
   renderer_->ResetCamera();
 
   // Call render twice
-  render_widget_->GetRenderWindow()->Render();
-  render_widget_->GetRenderWindow()->Render();
+  render_widget_->renderWindow()->Render();
+  render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onLoadMesh(const bool /*checked*/)
@@ -288,8 +288,8 @@ void TPPWidget::onPlan(const bool /*checked*/)
     }
 
     // Call render twice
-    render_widget_->GetRenderWindow()->Render();
-    render_widget_->GetRenderWindow()->Render();
+    render_widget_->renderWindow()->Render();
+    render_widget_->renderWindow()->Render();
   }
   catch (const std::exception& ex)
   {
