@@ -38,6 +38,7 @@ public:
                           ToolPathPlanner::ConstPtr planner,
                           ToolPathModifier::ConstPtr tool_path_mod);
 
+  std::vector<ToolPaths> plan(std::string filepath) const;
   std::vector<ToolPaths> plan(pcl::PolygonMesh mesh) const;
   MeshModifier::ConstPtr mesh_modifier;
   ToolPathPlanner::ConstPtr planner;

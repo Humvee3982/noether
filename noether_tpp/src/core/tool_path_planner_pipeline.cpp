@@ -2,6 +2,8 @@
 
 #include <utility>  // std::move()
 
+#include <pcl/io/vtk_lib_io.h>  // pcl::io::loadPolygonFile()
+
 namespace noether
 {
 ToolPathPlannerPipeline::ToolPathPlannerPipeline(MeshModifier::ConstPtr mesh_mod,
@@ -9,6 +11,17 @@ ToolPathPlannerPipeline::ToolPathPlannerPipeline(MeshModifier::ConstPtr mesh_mod
                                                  ToolPathModifier::ConstPtr tool_path_mod)
   : mesh_modifier(std::move(mesh_mod)), planner(std::move(planner)), tool_path_modifier(std::move(tool_path_mod))
 {
+}
+
+std::vector<ToolPaths> ToolPathPlannerPipeline::plan(std::string filepath) const
+{
+  pcl::PolygonMesh mesh;
+  if (pcl::io::loadPolygonFile(filepath, mesh) < 1)
+  {
+    throw std::runtime_error("Failed to load mesh from file");
+  }
+
+  return plan(mesh);
 }
 
 std::vector<ToolPaths> ToolPathPlannerPipeline::plan(pcl::PolygonMesh mesh) const
