@@ -87,9 +87,9 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
   mesh_actor_->SetVisibility(ui_->check_box_show_original_mesh->isChecked());
   mesh_fragment_actor_->SetVisibility(ui_->check_box_show_modified_mesh->isChecked());
   unmodified_tool_path_actor_->SetVisibility(ui_->check_box_show_original_tool_path->isChecked());
-  unmodified_connected_path_actor_->SetVisibility(!ui_->check_box_show_original_connected_path->isChecked());
+  unmodified_connected_path_actor_->SetVisibility(ui_->check_box_show_original_connected_path->isChecked());
   tool_path_actor_->SetVisibility(ui_->check_box_show_modified_tool_path->isChecked());
-  connected_path_actor_->SetVisibility(!ui_->check_box_show_modified_connected_path->isChecked());
+  connected_path_actor_->SetVisibilityui_->check_box_show_modified_connected_path->isChecked());
 
   // Connect signals
   connect(ui_->push_button_load_mesh, &QPushButton::clicked, this, &TPPWidget::onLoadMesh);
