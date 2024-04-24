@@ -35,6 +35,7 @@
 #include <vtkTransformFilter.h>
 #include <vtkTransform.h>
 #include <vtkTubeFilter.h>
+#include <vtkPolyLine.h>
 #include <pcl/surface/vtk_smoothing/vtk_utils.h>
 
 namespace noether
@@ -96,7 +97,7 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
   connect(ui_->double_spin_box_axis_size, &QDoubleSpinBox::editingFinished, this, [this]() {
     axes_->SetScaleFactor(ui_->double_spin_box_axis_size->value());
     tube_filter_->SetRadius(axes_->GetScaleFactor() / 10.0);
-    render_widget_->renderWindow()->Render();
+    
     render_widget_->renderWindow()->Render();
   });
 }
@@ -104,28 +105,28 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
 void TPPWidget::onShowOriginalMesh(const bool checked)
 {
   mesh_actor_->SetVisibility(checked);
-  render_widget_->renderWindow()->Render();
+  
   render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowModifiedMesh(const bool checked)
 {
   mesh_fragment_actor_->SetVisibility(checked);
-  render_widget_->renderWindow()->Render();
+  
   render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowUnmodifiedToolPath(const bool checked)
 {
   unmodified_tool_path_actor_->SetVisibility(checked);
-  render_widget_->renderWindow()->Render();
+  
   render_widget_->renderWindow()->Render();
 }
 
 void TPPWidget::onShowModifiedToolPath(const bool checked)
 {
   tool_path_actor_->SetVisibility(checked);
-  render_widget_->renderWindow()->Render();
+  
   render_widget_->renderWindow()->Render();
 }
 
@@ -153,8 +154,8 @@ void TPPWidget::setMeshFile(const QString& file)
   // Zoom out to the extents
   renderer_->ResetCamera();
 
-  // Call render twice
-  render_widget_->renderWindow()->Render();
+  
+  
   render_widget_->renderWindow()->Render();
 }
 
@@ -181,13 +182,15 @@ vtkSmartPointer<vtkAssembly> createToolPathActors(const std::vector<ToolPaths>& 
                                                   vtkAlgorithmOutput* waypoint_shape_output_port)
 {
   auto assembly = vtkSmartPointer<vtkAssembly>::New();
+  auto polyLine = vtkSmartPointer<vtkPolyLine>::New();
+  auto points = vtkSmartPointer<vtkPoints>::New();
+
   for (const ToolPaths& fragment : tool_paths)
   {
     for (const ToolPath& tool_path : fragment)
     {
       for (const ToolPathSegment& segment : tool_path)
-      {
-        for (const Eigen::Isometry3d& w : segment)
+      {        for (const Eigen::Isometry3d& w : segment)
         {
           auto transform_filter = vtkSmartPointer<vtkTransformFilter>::New();
           transform_filter->SetTransform(toVTK(w));
@@ -200,10 +203,38 @@ vtkSmartPointer<vtkAssembly> createToolPathActors(const std::vector<ToolPaths>& 
           actor->SetMapper(map);
 
           assembly->AddPart(actor);
+
+          // Add the point to the polyline
+          const int id = points->InsertNextPoint(w.translation().data());
         }
       }
     }
   }
+
+  // Set the number of ids for the polyline
+  polyLine->GetPointIds()->SetNumberOfIds(points->GetNumberOfPoints());
+
+  // Set the ids for the polyline
+  for(vtkIdType i = 0; i < points->GetNumberOfPoints(); i++)
+  {
+    polyLine->GetPointIds()->SetId(i, i);
+  }
+
+  // Create the polyline
+  vtkSmartPointer<vtkCellArray> cells = vtkSmartPointer<vtkCellArray>::New();
+  cells->InsertNextCell(polyLine);
+
+  vtkSmartPointer<vtkPolyData> polyData = vtkSmartPointer<vtkPolyData>::New();
+  polyData->SetPoints(points);
+  polyData->SetLines(cells);
+
+  vtkSmartPointer<vtkPolyDataMapper> lineMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
+  lineMapper->SetInputData(polyData);
+
+  vtkSmartPointer<vtkActor> lineActor = vtkSmartPointer<vtkActor>::New();
+  lineActor->SetMapper(lineMapper);
+
+  assembly->AddPart(lineActor);
 
   return assembly;
 }
@@ -287,9 +318,9 @@ void TPPWidget::onPlan(const bool /*checked*/)
       tool_path_actor_->SetVisibility(ui_->check_box_show_modified_tool_path->isChecked());
     }
 
-    // Call render twice
+    
     render_widget_->renderWindow()->Render();
-    render_widget_->renderWindow()->Render();
+    
   }
   catch (const std::exception& ex)
   {
