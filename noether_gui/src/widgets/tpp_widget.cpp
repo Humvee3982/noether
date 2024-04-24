@@ -89,7 +89,7 @@ TPPWidget::TPPWidget(boost_plugin_loader::PluginLoader loader, QWidget* parent)
   unmodified_tool_path_actor_->SetVisibility(ui_->check_box_show_original_tool_path->isChecked());
   unmodified_connected_path_actor_->SetVisibility(ui_->check_box_show_original_connected_path->isChecked());
   tool_path_actor_->SetVisibility(ui_->check_box_show_modified_tool_path->isChecked());
-  connected_path_actor_->SetVisibilityui_->check_box_show_modified_connected_path->isChecked());
+  connected_path_actor_->SetVisibility(ui_->check_box_show_modified_connected_path->isChecked());
 
   // Connect signals
   connect(ui_->push_button_load_mesh, &QPushButton::clicked, this, &TPPWidget::onLoadMesh);
@@ -361,7 +361,7 @@ void TPPWidget::onPlan(const bool /*checked*/)
       renderer_->RemoveActor(unmodified_connected_path_actor_);
       unmodified_connected_path_actor_ = createToolPathPolylineActor(unmodified_tool_paths, tube_filter_->GetOutputPort());
       renderer_->AddActor(unmodified_connected_path_actor_);
-      unmodified_connected_path_actor_->SetVisibility(!ui_->check_box_show_original_tool_path->isChecked());
+      unmodified_connected_path_actor_->SetVisibility(ui_->check_box_show_original_connected_path->isChecked());
     }
 
     // Render the modified tool paths
@@ -377,7 +377,7 @@ void TPPWidget::onPlan(const bool /*checked*/)
       renderer_->RemoveActor(connected_path_actor_);
       connected_path_actor_ = createToolPathPolylineActor(tool_paths_, tube_filter_->GetOutputPort());
       renderer_->AddActor(connected_path_actor_);
-      connected_path_actor_->SetVisibility(!ui_->check_box_show_modified_tool_path->isChecked());
+      connected_path_actor_->SetVisibility(ui_->check_box_show_modified_connected_path->isChecked());
     }
 
     
